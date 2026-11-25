@@ -1,93 +1,225 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#101018">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quest Custom Menu</title>
 
 <style>
+* { box-sizing: border-box; }
+
 body {
-  background: #101018;
+  background: #080b12;
   color: white;
-  font-family: Arial;
-  text-align: center;
-  padding: 20px;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 18px;
 }
 
 .menu {
-  background: #20202d;
-  border-radius: 20px;
-  padding: 20px;
-  max-width: 500px;
+  max-width: 550px;
   margin: auto;
 }
 
 h1 {
   color: #00eaff;
+  text-align: center;
+  text-shadow: 0 0 15px #00eaff;
+}
+
+.subtitle {
+  text-align: center;
+  color: #8996a8;
+}
+
+.section {
+  background: #141c29;
+  border: 1px solid #164e62;
+  border-radius: 14px;
+  padding: 15px;
+  margin: 12px 0;
+}
+
+.section h2 {
+  color: #00eaff;
+  font-size: 19px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #293747;
 }
 
 button {
-  width: 100%;
-  padding: 18px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 12px;
-  background: #34344a;
+  background: #003d50;
   color: white;
-  font-size: 18px;
-}
-
-button:active {
-  background: #00aaff;
+  border: 1px solid #00eaff;
+  border-radius: 9px;
+  padding: 12px;
+  font-size: 15px;
 }
 
 input {
-  width: 90%;
+  background: #080b12;
+  color: white;
+  border: 1px solid #00eaff;
   padding: 12px;
-  margin: 10px;
-  border-radius: 10px;
+  border-radius: 8px;
+  max-width: 100%;
 }
+
+input[type=checkbox] {
+  accent-color: #00eaff;
+  width: 22px;
+  height: 22px;
+}
+
+#status {
+  color: #00eaff;
+  text-align: center;
+}
+
 </style>
 </head>
 
 <body>
-
 <div class="menu">
-<h1>QUEST MENU</h1>
 
-<input id="newName" placeholder="Add your own button name">
+<h1>QUEST CUSTOM MENU</h1>
+<p class="subtitle">YOUR PERSONAL GAMING CONTROL CENTER</p>
 
-<button onclick="addButton()">+ Add Custom Button</button>
+<p id="status">SYSTEM READY</p>
 
-<div id="buttons">
-<button onclick="alert('Welcome to your menu!')">Home</button>
-<button onclick="alert('Movement settings')">Movement</button>
-<button onclick="alert('Your custom settings')">Settings</button>
+<div class="section">
+<h2>🏠 Home</h2>
+<p>Welcome to your custom Quest menu.</p>
+<p>Customize your features below.</p>
+</div>
+
+<div class="section">
+<h2>⚡ Movement</h2>
+<div id="movement"></div>
+</div>
+
+<div class="section">
+<h2>🚀 Speed</h2>
+<div id="speed"></div>
+</div>
+
+<div class="section">
+<h2>🕊️ Fly</h2>
+<div id="fly"></div>
+</div>
+
+<div class="section">
+<h2>🔊 Soundboard</h2>
+<div id="soundboard"></div>
+</div>
+
+<div class="section">
+<h2>🎙️ Voice Changer</h2>
+<div id="voice"></div>
+</div>
+
+<div class="section">
+<h2>🛠️ Custom Features</h2>
+
+<input id="featureName"
+placeholder="Enter feature name">
+
+<button onclick="addFeature()">
++ Add Feature
+</button>
+
+<div id="custom"></div>
+</div>
+
+<div class="section">
+<h2>⚙️ Settings</h2>
+<button onclick="resetMenu()">Reset Menu</button>
 </div>
 
 </div>
 
 <script>
-function addButton() {
-  let name = document.getElementById("newName").value;
+const groups = {
+ movement: ["Movement Toggle"],
+ speed: ["Speed Setting"],
+ fly: ["Flight Setting"],
+ soundboard: ["Sound Effect"],
+ voice: ["Voice Effect"]
+};
 
-  if (name.trim() === "") {
-    alert("Enter a button name first!");
-    return;
-  }
+function createFeature(name, container) {
+ let row = document.createElement("div");
+ row.className = "feature";
 
-  let button = document.createElement("button");
-  button.textContent = name;
+ let label = document.createElement("span");
+ label.textContent = name;
 
-  button.onclick = function() {
-    alert(name + " selected!");
-  };
+ let toggle = document.createElement("input");
+ toggle.type = "checkbox";
 
-  document.getElementById("buttons").appendChild(button);
+ toggle.onchange = () => {
+   document.getElementById("status").textContent =
+     name + (toggle.checked ? " ON" : " OFF");
+   saveMenu();
+ };
 
-  document.getElementById("newName").value = "";
+ row.append(label, toggle);
+ container.appendChild(row);
 }
+
+function loadMenu() {
+ Object.keys(groups).forEach(group => {
+   let container = document.getElementById(group);
+   groups[group].forEach(name =>
+     createFeature(name, container)
+   );
+ });
+
+ let saved = JSON.parse(
+   localStorage.getItem("questFeatures") || "[]"
+ );
+
+ saved.forEach(name =>
+   createFeature(name, document.getElementById("custom"))
+ );
+}
+
+function addFeature() {
+ let input = document.getElementById("featureName");
+ let name = input.value.trim();
+
+ if (!name) return;
+
+ createFeature(name, document.getElementById("custom"));
+
+ let saved = JSON.parse(
+   localStorage.getItem("questFeatures") || "[]"
+ );
+
+ saved.push(name);
+ localStorage.setItem("questFeatures", JSON.stringify(saved));
+
+ input.value = "";
+ document.getElementById("status").textContent =
+   name + " ADDED";
+}
+
+function saveMenu() {
+ document.getElementById("status").textContent =
+   "SETTINGS UPDATED";
+}
+
+function resetMenu() {
+ localStorage.removeItem("questFeatures");
+ location.reload();
+}
+
+loadMenu();
 </script>
 
 </body>
