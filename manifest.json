@@ -1,0 +1,11 @@
+{
+  "name": "Quest Custom Menu",
+  "short_name": "QuestMenu",
+  "description": "My customizable Quest menu",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#101018",
+  "theme_color": "#00eaff"
+}
