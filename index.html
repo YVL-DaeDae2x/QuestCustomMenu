@@ -1,277 +1,202 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quest Custom Menu</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEON QUEST</title>
 
 <style>
 * { box-sizing: border-box; }
 
 body {
-  background: #080b12;
-  color: white;
-  font-family: Arial, sans-serif;
   margin: 0;
-  padding: 18px;
+  background: transparent;
+  color: #00ffff;
+  font-family: Arial, sans-serif;
 }
 
-.menu {
-  max-width: 550px;
-  margin: auto;
+#menu {
+  position: absolute;
+  top: 60px;
+  left: 40px;
+  width: 300px;
+  border: 2px solid #00ffff;
+  border-radius: 16px;
+  background: rgba(0, 10, 20, .82);
+  box-shadow: 0 0 18px #00ffff;
+  overflow: hidden;
 }
 
-h1 {
-  color: #00eaff;
+header {
+  padding: 16px;
   text-align: center;
-  text-shadow: 0 0 15px #00eaff;
+  font-size: 23px;
+  font-weight: bold;
+  text-shadow: 0 0 12px #00ffff;
+  cursor: move;
+  border-bottom: 1px solid #00ffff;
 }
 
-.subtitle {
-  text-align: center;
-  color: #8996a8;
-}
-
-.section {
-  background: #141c29;
-  border: 1px solid #164e62;
-  border-radius: 14px;
-  padding: 15px;
-  margin: 12px 0;
-}
-
-.section h2 {
-  color: #00eaff;
-  font-size: 19px;
-}
-
-.feature {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #293747;
+nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  padding: 10px;
 }
 
 button {
-  background: #003d50;
-  color: white;
-  border: 1px solid #00eaff;
-  border-radius: 9px;
-  padding: 12px;
-  font-size: 15px;
-}
-
-input {
-  background: #080b12;
-  color: white;
-  border: 1px solid #00eaff;
-  padding: 12px;
+  background: rgba(0, 255, 255, .08);
+  border: 1px solid #00ffff;
+  color: #00ffff;
   border-radius: 8px;
-  max-width: 100%;
+  padding: 11px 5px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-input[type=checkbox] {
-  accent-color: #00eaff;
-  width: 22px;
-  height: 22px;
+button:active,
+button.active {
+  background: #00ffff;
+  color: #001018;
+  box-shadow: 0 0 12px #00ffff;
 }
 
-#status {
-  color: #00eaff;
-  text-align: center;
+#content {
+  padding: 15px;
+  min-height: 160px;
 }
 
+h3 {
+  margin-top: 0;
+  text-shadow: 0 0 8px #00ffff;
+}
+
+.option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #00ffff;
+}
+
+#close {
+  margin: 0 10px 12px;
+  width: calc(100% - 20px);
+}
 </style>
 </head>
 
 <body>
-<div class="menu">
 
-<h1>QUEST CUSTOM MENU</h1>
-<p class="subtitle">YOUR PERSONAL GAMING CONTROL CENTER</p>
+<div id="menu">
+  <header id="drag">⚡ NEON QUEST ⚡</header>
 
-<p id="status">SYSTEM READY</p>
+  <nav>
+    <button onclick="showTab('Movement',this)">Movement</button>
+    <button onclick="showTab('Speed',this)">Speed</button>
+    <button onclick="showTab('Fly',this)">Fly</button>
+    <button onclick="showTab('Soundboard',this)">Soundboard</button>
+    <button onclick="showTab('Voice Changer',this)">Voice Changer</button>
+    <button onclick="showTab('Settings',this)">Settings</button>
+  </nav>
 
-<div class="section">
-<h2>🏠 Home</h2>
-<p>Welcome to your custom Quest menu.</p>
-<p>Customize your features below.</p>
-</div>
+  <section id="content">
+    <h3>Welcome!</h3>
+    Select a tab to get started.
+  </section>
 
-<div class="section">
-<h2>⚡ Movement</h2>
-<div id="movement"></div>
-</div>
-
-<div class="section">
-<h2>🚀 Speed</h2>
-<div id="speed"></div>
-</div>
-
-<div class="section">
-<h2>🕊️ Fly</h2>
-<div id="fly"></div>
-</div>
-
-<div class="section">
-<h2>🔊 SOUNDBOARD</h2>
-
-<button onclick="playTone(880,300)">📢 Airhorn</button>
-<button onclick="playTone(500,700)">🚨 Alarm</button>
-<button onclick="playTone(650,200)">😂 Funny Sound</button>
-<button onclick="playTone(1000,150)">🔔 Bell</button>
-
-<hr>
-
-<h3>🎵 Your Own Sounds</h3>
-
-<input type="file" id="soundUpload" accept="audio/*">
-
-<audio id="customAudio" controls></audio>
-
-<button onclick="stopSound()">⏹ STOP SOUND</button>
-</div>
-
-<div class="section">
-<h2>🎙️ Voice Changer</h2>
-<div id="voice"></div>
-</div>
-
-<div class="section">
-<h2>🛠️ Custom Features</h2>
-
-<input id="featureName"
-placeholder="Enter feature name">
-
-<button onclick="addFeature()">
-+ Add Feature
-</button>
-
-<div id="custom"></div>
-</div>
-
-<div class="section">
-<h2>⚙️ Settings</h2>
-<button onclick="resetMenu()">Reset Menu</button>
-</div>
-
+  <button id="close" onclick="toggleMenu()">CLOSE MENU</button>
 </div>
 
 <script>
-const groups = {
- movement: ["Movement Toggle"],
- speed: ["Speed Setting"],
- fly: ["Flight Setting"],
- voice: ["Voice Effect"]
-};
+const content = document.getElementById("content");
 
-function createFeature(name, container) {
- let row = document.createElement("div");
- row.className = "feature";
+function showTab(name, button) {
+  document.querySelectorAll("nav button")
+    .forEach(b => b.classList.remove("active"));
 
- let label = document.createElement("span");
- label.textContent = name;
+  button.classList.add("active");
 
- let toggle = document.createElement("input");
- toggle.type = "checkbox";
+  const pages = {
+    "Movement": `
+      <h3>Movement</h3>
+      <div class="option">Movement menu <input type="checkbox"></div>
+      <p>Movement controls are interface options only.</p>
+    `,
+    "Speed": `
+      <h3>Speed</h3>
+      <p>Speed setting: <span id="speedValue">1x</span></p>
+      <input type="range" min="1" max="10" value="1"
+      oninput="document.getElementById('speedValue').textContent=this.value+'x'">
+    `,
+    "Fly": `
+      <h3>Fly</h3>
+      <div class="option">Fly toggle <input type="checkbox"></div>
+      <p>Does not change in-game movement.</p>
+    `,
+    "Soundboard": `
+      <h3>Soundboard</h3>
+      <button onclick="beep()">Play Beep</button>
+      <button onclick="stopSound()">Stop</button>
+    `,
+    "Voice Changer": `
+      <h3>Voice Changer</h3>
+      <p>Voice effects are not connected to Horizon voice chat.</p>
+    `,
+    "Settings": `
+      <h3>Settings</h3>
+      <div class="option">Glow <input type="checkbox" checked></div>
+      <button onclick="toggleMenu()">Close Menu</button>
+    `
+  };
 
- toggle.onchange = () => {
-   document.getElementById("status").textContent =
-     name + (toggle.checked ? " ON" : " OFF");
-   saveMenu();
- };
-
- row.append(label, toggle);
- container.appendChild(row);
+  content.innerHTML = pages[name];
 }
 
-function loadMenu() {
- Object.keys(groups).forEach(group => {
-   let container = document.getElementById(group);
-   groups[group].forEach(name =>
-     createFeature(name, container)
-   );
- });
+let audio;
 
- let saved = JSON.parse(
-   localStorage.getItem("questFeatures") || "[]"
- );
-
- saved.forEach(name =>
-   createFeature(name, document.getElementById("custom"))
- );
-}
-
-function addFeature() {
- let input = document.getElementById("featureName");
- let name = input.value.trim();
-
- if (!name) return;
-
- createFeature(name, document.getElementById("custom"));
-
- let saved = JSON.parse(
-   localStorage.getItem("questFeatures") || "[]"
- );
-
- saved.push(name);
- localStorage.setItem("questFeatures", JSON.stringify(saved));
-
- input.value = "";
- document.getElementById("status").textContent =
-   name + " ADDED";
-}
-
-function saveMenu() {
- document.getElementById("status").textContent =
-   "SETTINGS UPDATED";
-}
-
-function resetMenu() {
- localStorage.removeItem("questFeatures");
- location.reload();
-}
-let audioContext;
-
-function playTone(frequency, duration) {
-  audioContext = audioContext ||
-    new (window.AudioContext || window.webkitAudioContext)();
-
-  audioContext.resume();
-
-  let oscillator = audioContext.createOscillator();
-  let gain = audioContext.createGain();
-
-  oscillator.frequency.value = frequency;
-  oscillator.connect(gain);
-  gain.connect(audioContext.destination);
-
+function beep() {
+  audio = new AudioContext();
+  const oscillator = audio.createOscillator();
+  oscillator.connect(audio.destination);
+  oscillator.frequency.value = 700;
   oscillator.start();
-
-  gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-  gain.gain.exponentialRampToValueAtTime(
-    0.001,
-    audioContext.currentTime + duration / 1000
-  );
-
-  oscillator.stop(audioContext.currentTime + duration / 1000);
+  oscillator.stop(audio.currentTime + .3);
 }
-
-document.getElementById("soundUpload").onchange = function() {
-  let file = this.files[0];
-
-  if (file) {
-    document.getElementById("customAudio").src =
-      URL.createObjectURL(file);
-  }
-};
 
 function stopSound() {
-  let audio = document.getElementById("customAudio");
-  audio.pause();
-  audio.currentTime = 0;
+  if (audio) audio.close();
 }
-loadMenu();
+
+function toggleMenu() {
+  const menu = document.getElementById("menu");
+  menu.style.display =
+    menu.style.display === "none" ? "block" : "none";
+}
+
+const menu = document.getElementById("menu");
+const drag = document.getElementById("drag");
+
+let moving = false, offsetX = 0, offsetY = 0;
+
+drag.addEventListener("pointerdown", e => {
+  moving = true;
+  offsetX = e.clientX - menu.offsetLeft;
+  offsetY = e.clientY - menu.offsetTop;
+  drag.setPointerCapture(e.pointerId);
+});
+
+drag.addEventListener("pointermove", e => {
+  if (!moving) return;
+  menu.style.left = (e.clientX - offsetX) + "px";
+  menu.style.top = (e.clientY - offsetY) + "px";
+});
+
+drag.addEventListener("pointerup", () => moving = false);
 </script>
 
 </body>
