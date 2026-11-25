@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quest Custom Menu</title>
+
+<style>
+body {
+  background: #101018;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+  padding: 20px;
+}
+
+.menu {
+  background: #20202d;
+  border-radius: 20px;
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+}
+
+h1 {
+  color: #00eaff;
+}
+
+button {
+  width: 100%;
+  padding: 18px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 12px;
+  background: #34344a;
+  color: white;
+  font-size: 18px;
+}
+
+button:active {
+  background: #00aaff;
+}
+
+input {
+  width: 90%;
+  padding: 12px;
+  margin: 10px;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="menu">
+<h1>QUEST MENU</h1>
+
+<input id="newName" placeholder="Add your own button name">
+
+<button onclick="addButton()">+ Add Custom Button</button>
+
+<div id="buttons">
+<button onclick="alert('Welcome to your menu!')">Home</button>
+<button onclick="alert('Movement settings')">Movement</button>
+<button onclick="alert('Your custom settings')">Settings</button>
+</div>
+
+</div>
+
+<script>
+function addButton() {
+  let name = document.getElementById("newName").value;
+
+  if (name.trim() === "") {
+    alert("Enter a button name first!");
+    return;
+  }
+
+  let button = document.createElement("button");
+  button.textContent = name;
+
+  button.onclick = function() {
+    alert(name + " selected!");
+  };
+
+  document.getElementById("buttons").appendChild(button);
+
+  document.getElementById("newName").value = "";
+}
+</script>
+
+</body>
+</html>
