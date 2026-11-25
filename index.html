@@ -114,8 +114,22 @@ input[type=checkbox] {
 </div>
 
 <div class="section">
-<h2>🔊 Soundboard</h2>
-<div id="soundboard"></div>
+<h2>🔊 SOUNDBOARD</h2>
+
+<button onclick="playTone(880,300)">📢 Airhorn</button>
+<button onclick="playTone(500,700)">🚨 Alarm</button>
+<button onclick="playTone(650,200)">😂 Funny Sound</button>
+<button onclick="playTone(1000,150)">🔔 Bell</button>
+
+<hr>
+
+<h3>🎵 Your Own Sounds</h3>
+
+<input type="file" id="soundUpload" accept="audio/*">
+
+<audio id="customAudio" controls></audio>
+
+<button onclick="stopSound()">⏹ STOP SOUND</button>
 </div>
 
 <div class="section">
@@ -148,7 +162,6 @@ const groups = {
  movement: ["Movement Toggle"],
  speed: ["Speed Setting"],
  fly: ["Flight Setting"],
- soundboard: ["Sound Effect"],
  voice: ["Voice Effect"]
 };
 
@@ -218,7 +231,46 @@ function resetMenu() {
  localStorage.removeItem("questFeatures");
  location.reload();
 }
+let audioContext;
 
+function playTone(frequency, duration) {
+  audioContext = audioContext ||
+    new (window.AudioContext || window.webkitAudioContext)();
+
+  audioContext.resume();
+
+  let oscillator = audioContext.createOscillator();
+  let gain = audioContext.createGain();
+
+  oscillator.frequency.value = frequency;
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
+
+  oscillator.start();
+
+  gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(
+    0.001,
+    audioContext.currentTime + duration / 1000
+  );
+
+  oscillator.stop(audioContext.currentTime + duration / 1000);
+}
+
+document.getElementById("soundUpload").onchange = function() {
+  let file = this.files[0];
+
+  if (file) {
+    document.getElementById("customAudio").src =
+      URL.createObjectURL(file);
+  }
+};
+
+function stopSound() {
+  let audio = document.getElementById("customAudio");
+  audio.pause();
+  audio.currentTime = 0;
+}
 loadMenu();
 </script>
 
