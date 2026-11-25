@@ -1,4 +1,5 @@
 {
+  "id": "./",
   "name": "Quest Custom Menu",
   "short_name": "QuestMenu",
   "description": "My customizable Quest menu",
@@ -7,12 +8,12 @@
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#101018",
-  "theme_color": "#00eaff"
-,
-"icons": [
-  {
-    "src": "icon-512.png",
-    "sizes": "1024x1024",
-    "type": "image/png"
-  }
-]
+  "theme_color": "#00eaff",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}
